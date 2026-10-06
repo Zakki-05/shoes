@@ -1,13 +1,32 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, X, ArrowRight, Eye } from 'lucide-react';
+import { Search, X, Eye, Clock, Trash2 } from 'lucide-react';
 import { useShop } from '../context/ShopContext';
-import { ALL_CATEGORIES_LIST } from '../data/products';
 
 export function SearchModal() {
   const { isSearchOpen, setIsSearchOpen, products, setInspect3DProduct } = useShop();
   const [query, setQuery] = useState('');
+  const [recentSearches, setRecentSearches] = useState(() => {
+    try {
+      const saved = localStorage.getItem('aurelius_recent_searches');
+      return saved ? JSON.parse(saved) : ["Cap Toe Oxfords", "Chelsea Boots", "Tassel Loafers"];
+    } catch {
+      return ["Cap Toe Oxfords", "Chelsea Boots", "Tassel Loafers"];
+    }
+  });
+
   const inputRef = useRef();
+
+  // Keyboard ESC listener to close search
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isSearchOpen) {
+        setIsSearchOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isSearchOpen, setIsSearchOpen]);
 
   useEffect(() => {
     if (isSearchOpen && inputRef.current) {
@@ -16,6 +35,17 @@ export function SearchModal() {
   }, [isSearchOpen]);
 
   if (!isSearchOpen) return null;
+
+  const saveRecentSearch = (searchTerm) => {
+    const updated = [searchTerm, ...recentSearches.filter((s) => s !== searchTerm)].slice(0, 5);
+    setRecentSearches(updated);
+    localStorage.setItem('aurelius_recent_searches', JSON.stringify(updated));
+  };
+
+  const clearRecentSearches = () => {
+    setRecentSearches([]);
+    localStorage.removeItem('aurelius_recent_searches');
+  };
 
   const filteredProducts = query.trim() === ''
     ? []
@@ -29,6 +59,7 @@ export function SearchModal() {
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4">
+      {/* Backdrop */}
       <div
         onClick={() => setIsSearchOpen(false)}
         className="absolute inset-0 bg-black/85 backdrop-blur-md transition-opacity animate-fade-in"
@@ -50,32 +81,65 @@ export function SearchModal() {
           <button
             onClick={() => setIsSearchOpen(false)}
             className="w-9 h-9 rounded-full hover:bg-stone-800 text-stone-400 hover:text-white flex items-center justify-center transition-colors"
+            title="Press ESC to close"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Suggested Categories Tags */}
+        {/* Recent & Suggested Searches */}
         {query.trim() === '' && (
-          <div>
-            <span className="text-[10px] font-mono uppercase tracking-widest text-stone-400 block mb-3">
-              Popular Luxury Searches:
-            </span>
-            <div className="flex flex-wrap gap-2 mb-6">
-              {["Cap Toe Oxfords", "Penny Loafers", "Chelsea Boots", "Wholecuts", "Double Monk Strap", "Velvet Slippers", "Italian Suede"].map((tag) => (
-                <button
-                  key={tag}
-                  onClick={() => setQuery(tag)}
-                  className="px-3 py-1.5 glass-panel hover:bg-amber-500/20 hover:border-amber-400 text-stone-300 hover:text-amber-300 text-xs font-mono rounded-full border border-stone-800 transition-colors"
-                >
-                  {tag}
-                </button>
-              ))}
+          <div className="space-y-6">
+            {recentSearches.length > 0 && (
+              <div>
+                <div className="flex justify-between items-center mb-3 text-[10px] font-mono uppercase tracking-widest text-stone-400">
+                  <span className="flex items-center space-x-1.5">
+                    <Clock className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Recent Searches:</span>
+                  </span>
+                  <button onClick={clearRecentSearches} className="hover:text-red-400 flex items-center space-x-1">
+                    <Trash2 className="w-3 h-3" />
+                    <span>Clear</span>
+                  </button>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {recentSearches.map((term, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setQuery(term)}
+                      className="px-3 py-1.5 bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-amber-300 text-xs font-mono rounded-xl border border-stone-800 transition-colors"
+                    >
+                      {term}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div>
+              <span className="text-[10px] font-mono uppercase tracking-widest text-stone-400 block mb-3">
+                Popular Footwear Searches:
+              </span>
+              <div className="flex flex-wrap gap-2">
+                {["Cap Toe Oxfords", "Penny Loafers", "Chelsea Boots", "Wholecuts", "Double Monk Strap", "Velvet Slippers", "Italian Suede"].map((tag) => (
+                  <button
+                    key={tag}
+                    onClick={() => {
+                      setQuery(tag);
+                      saveRecentSearch(tag);
+                    }}
+                    className="px-3 py-1.5 glass-panel hover:bg-amber-500/20 hover:border-amber-400 text-stone-300 hover:text-amber-300 text-xs font-mono rounded-full border border-stone-800 transition-colors"
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         )}
 
-        {/* Live Search Results */}
+        {/* Search Results List */}
         {query.trim() !== '' && (
           <div className="max-h-96 overflow-y-auto space-y-3 pr-2">
             <span className="text-[10px] font-mono uppercase tracking-widest text-amber-400 block mb-2">
@@ -94,7 +158,10 @@ export function SearchModal() {
                 >
                   <Link
                     to={`/product/${product.id}`}
-                    onClick={() => setIsSearchOpen(false)}
+                    onClick={() => {
+                      saveRecentSearch(query);
+                      setIsSearchOpen(false);
+                    }}
                     className="flex items-center space-x-4 flex-1"
                   >
                     <img
@@ -113,6 +180,7 @@ export function SearchModal() {
 
                   <button
                     onClick={() => {
+                      saveRecentSearch(query);
                       setInspect3DProduct(product);
                       setIsSearchOpen(false);
                     }}

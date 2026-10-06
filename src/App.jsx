@@ -10,6 +10,7 @@ import { WishlistDrawer } from './components/WishlistDrawer';
 import { SearchModal } from './components/SearchModal';
 import { LoginModal } from './components/LoginModal';
 import { Interactive3DViewer } from './components/Interactive3DViewer';
+import { CustomCursor } from './components/CustomCursor';
 import { Sparkles } from 'lucide-react';
 
 import { Home } from './pages/Home';
@@ -19,6 +20,7 @@ import { Collections } from './pages/Collections';
 import { About } from './pages/About';
 import { Account } from './pages/Account';
 import { Checkout } from './pages/Checkout';
+import { OrderConfirmation } from './pages/OrderConfirmation';
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '1082739482910-demo-aurelius-google-client-id.apps.googleusercontent.com';
 
@@ -52,6 +54,7 @@ function AppContent() {
   return (
     <>
       {isLoading && <LoadingScreen onFinish={() => setIsLoading(false)} />}
+      <CustomCursor />
       
       <div className={`min-h-screen flex flex-col justify-between bg-[#0A0A0C] text-[#F4EFE7] selection:bg-amber-500 selection:text-black ${isLoading ? 'opacity-0' : 'opacity-100 transition-opacity duration-700'}`}>
         <Navbar />
@@ -65,6 +68,8 @@ function AppContent() {
             <Route path="/about" element={<About />} />
             <Route path="/account" element={<Account />} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/order-confirmation" element={<OrderConfirmation />} />
+            <Route path="/order-confirmation/:orderId" element={<OrderConfirmation />} />
           </Routes>
         </main>
 

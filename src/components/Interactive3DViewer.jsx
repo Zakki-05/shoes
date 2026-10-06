@@ -1,9 +1,8 @@
 import React, { useState, Suspense } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment, ContactShadows, Html } from '@react-three/drei';
-import { X, RotateCcw, ShieldCheck, ShoppingBag, Eye, Layers } from 'lucide-react';
-import { ParametricShoe } from './Hero3D/ParametricShoe';
+import { X, RotateCcw, ShieldCheck, ShoppingBag, Eye } from 'lucide-react';
+import { Product3DViewer } from './Product3DViewer';
 import { useShop } from '../context/ShopContext';
+
 
 function LoadingFallback() {
   return (
@@ -68,44 +67,21 @@ export function Interactive3DViewer({ product, onClose }) {
 
       {/* 3D Viewport Canvas */}
       <div className="w-full h-full relative">
-        <Canvas
-          camera={{ position: [0, 0.5, 4.2], fov: 42 }}
-          dpr={[1, 2]}
-          gl={{ antialias: true, alpha: true }}
-        >
-          <ambientLight intensity={0.7} />
-          <spotLight position={[5, 8, 5]} angle={0.4} intensity={2.5} castShadow />
-          <directionalLight position={[-5, 3, -4]} intensity={1.8} color="#C7A46A" />
-
-          <Suspense fallback={<LoadingFallback />}>
-            <group position={[0, -0.2, 0]}>
-              <ParametricShoe
-                color={selectedColor.primary3D || selectedColor.hex}
-                accentColor={modelParams.accentColor || "#C7A46A"}
-                soleColor={selectedColor.sole3D || "#1A0F0A"}
-                roughness={modelParams.leatherRoughness || 0.3}
-                clearcoat={modelParams.clearcoat || 0.8}
-                type={modelParams.type || "oxford"}
-                hasCapToe={modelParams.hasCapToe !== false}
-                loaferType={modelParams.loaferType}
-                bootStyle={modelParams.bootStyle}
-                hasBuckle={modelParams.hasBuckle}
-                isInteractive={false}
-              />
-            </group>
-
-            <ContactShadows position={[0, -0.9, 0]} opacity={0.65} scale={8} blur={2} />
-            <Environment preset={lightPreset} environmentIntensity={0.8} />
-          </Suspense>
-
-          <OrbitControls
-            enablePan={true}
-            enableZoom={true}
-            minDistance={2.2}
-            maxDistance={7.0}
-            maxPolarAngle={Math.PI / 2 + 0.1}
-          />
-        </Canvas>
+        <Product3DViewer
+          model={product?.model3D || null}
+          productParams={{
+            baseColor: selectedColor.primary3D || selectedColor.hex,
+            accentColor: modelParams.accentColor || "#C7A46A",
+            soleColor: selectedColor.sole3D || "#1A0F0A",
+            roughness: modelParams.leatherRoughness || 0.3,
+            clearcoat: modelParams.clearcoat || 0.8,
+            type: modelParams.type || "oxford",
+            hasCapToe: modelParams.hasCapToe !== false,
+            loaferType: modelParams.loaferType,
+            bootStyle: modelParams.bootStyle,
+            hasBuckle: modelParams.hasBuckle
+          }}
+        />
 
         {/* Floating Hint Overlay */}
         <div className="absolute bottom-28 left-1/2 -translate-x-1/2 glass-panel px-4 py-2 rounded-full border border-white/10 text-xs text-stone-400 pointer-events-none flex items-center space-x-2">
