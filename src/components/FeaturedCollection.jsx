@@ -12,7 +12,7 @@ export function FeaturedCollection() {
     : products.filter((p) => p.categoryGroup === activeTab).slice(0, 8);
 
   return (
-    <section className="py-24 px-6 md:px-12 lg:px-20 max-w-7xl mx-auto border-t border-stone-800/80">
+    <section className="py-20 px-6 md:px-12 lg:px-20 max-w-7xl mx-auto border-t border-stone-800/80">
       
       {/* Title Header & Tabs */}
       <div className="flex flex-col items-center text-center mb-12">
@@ -20,29 +20,31 @@ export function FeaturedCollection() {
           <Sparkles className="w-3.5 h-3.5" />
           <span>Curated Masterpieces</span>
         </span>
-        <h2 className="text-3xl md:text-5xl font-serif-title font-extrabold text-stone-100 mb-6">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif-title font-extrabold text-stone-100 mb-6">
           THE FEATURED <span className="gold-gradient-text">COLLECTION</span>
         </h2>
 
-        {/* Category Filter Tabs */}
-        <div className="flex flex-wrap justify-center gap-2 p-1.5 glass-panel rounded-full border border-stone-800">
-          {PRODUCT_CATEGORIES.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`px-5 py-2 rounded-full text-xs font-mono uppercase tracking-wider transition-all duration-300 ${
-                activeTab === tab.id
-                  ? 'bg-amber-500 text-stone-950 font-bold shadow-lg shadow-amber-500/20'
-                  : 'text-stone-400 hover:text-stone-100 hover:bg-white/5'
-              }`}
-            >
-              {tab.name}
-            </button>
-          ))}
+        {/* Category Filter Tabs - Mobile Horizontally Scrollable */}
+        <div className="w-full overflow-x-auto no-scrollbar py-2">
+          <div className="inline-flex justify-center gap-2 p-1.5 glass-panel rounded-full border border-stone-800 min-w-max mx-auto">
+            {PRODUCT_CATEGORIES.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`px-4 sm:px-5 py-2 rounded-full text-xs font-mono uppercase tracking-wider transition-all duration-300 ${
+                  activeTab === tab.id
+                    ? 'bg-amber-500 text-stone-950 font-bold shadow-lg shadow-amber-500/20'
+                    : 'text-stone-400 hover:text-stone-100 hover:bg-white/5'
+                }`}
+              >
+                {tab.name}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Products Grid */}
+      {/* Products Grid - 1 Col Mobile, 2 Col Tablet, 4 Col Desktop */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
         {filteredProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
@@ -50,7 +52,7 @@ export function FeaturedCollection() {
       </div>
 
       {/* View All Button */}
-      <div className="mt-16 text-center">
+      <div className="mt-14 text-center">
         <Link
           to="/shop"
           className="inline-flex items-center space-x-3 px-8 py-4 glass-panel-gold hover:bg-amber-500 text-amber-300 hover:text-stone-950 font-bold text-xs uppercase tracking-widest rounded-full transition-all duration-300 border border-amber-500/40 shadow-xl shadow-amber-500/10 group"
