@@ -1,63 +1,30 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, RefreshCw, Truck, Globe, Award, Heart } from 'lucide-react';
-import { BRAND_NAME, BRAND_TAGLINE } from '../data/products';
+import { ShieldCheck, RefreshCw, Truck, Globe } from 'lucide-react';
+import { BRAND_CONFIG } from '../config/brand';
 
 export function Footer() {
   const [currency, setCurrency] = useState('INR (₹)');
 
   return (
-    <footer className="bg-[#0A0A0C] text-stone-400 border-t border-stone-800/80 pt-20 pb-12">
+    <footer className="bg-[#0B0B0B] text-stone-400 border-t border-stone-800/80 pt-20 pb-12">
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
         
-        {/* Top 3 Assurance Pillars */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-16 border-b border-stone-800/80">
-          <div className="flex items-center space-x-4 p-6 glass-panel rounded-2xl border border-stone-800">
-            <div className="w-12 h-12 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 flex-shrink-0">
-              <Truck className="w-6 h-6" />
-            </div>
-            <div>
-              <h4 className="text-sm font-serif-title font-bold text-stone-100 uppercase tracking-wider">Express Worldwide Delivery</h4>
-              <p className="text-xs text-stone-400 font-light">Free tracked courier on orders over ₹10,000</p>
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-4 p-6 glass-panel rounded-2xl border border-stone-800">
-            <div className="w-12 h-12 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 flex-shrink-0">
-              <ShieldCheck className="w-6 h-6" />
-            </div>
-            <div>
-              <h4 className="text-sm font-serif-title font-bold text-stone-100 uppercase tracking-wider">Lifetime Resoling Warranty</h4>
-              <p className="text-xs text-stone-400 font-light">Handcrafted Goodyear welt recrafting program</p>
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-4 p-6 glass-panel rounded-2xl border border-stone-800">
-            <div className="w-12 h-12 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 flex-shrink-0">
-              <RefreshCw className="w-6 h-6" />
-            </div>
-            <div>
-              <h4 className="text-sm font-serif-title font-bold text-stone-100 uppercase tracking-wider">30-Day Bespoke Exchange</h4>
-              <p className="text-xs text-stone-400 font-light">Complimentary return pickup & size fit exchange</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Main Footer Links */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 py-16">
+        {/* Main Footer Columns */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-16 border-b border-stone-800/80">
           
-          {/* Brand Col */}
+          {/* Brand Identity Col */}
           <div className="lg:col-span-2 space-y-4">
             <Link to="/" className="flex items-center space-x-3">
               <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-amber-600 to-amber-400 flex items-center justify-center font-serif-title text-stone-950 font-bold text-lg">
                 A
               </div>
               <span className="font-serif-title font-bold text-xl tracking-wider text-stone-100">
-                {BRAND_NAME}
+                {BRAND_CONFIG.brandName}
               </span>
             </Link>
             <p className="text-xs text-stone-400 font-light leading-relaxed max-w-sm">
-              {BRAND_TAGLINE}. Engineered with full-grain Italian & French leathers, Goodyear welt construction, and uncompromised luxury ergonomics.
+              {BRAND_CONFIG.brandDescription}
             </p>
 
             {/* Currency Selector */}
@@ -79,56 +46,60 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Footwear Categories */}
+          {/* SHOP Column */}
           <div>
-            <h4 className="text-xs font-mono uppercase tracking-widest text-stone-200 font-bold mb-4">Footwear Categories</h4>
+            <h4 className="text-xs font-mono uppercase tracking-widest text-stone-200 font-bold mb-4">SHOP</h4>
             <ul className="space-y-2.5 text-xs font-light">
-              <li><Link to="/shop?category=oxfords" className="hover:text-amber-400 transition-colors">Cap Toe Oxfords</Link></li>
-              <li><Link to="/shop?category=oxfords" className="hover:text-amber-400 transition-colors">Seamless Wholecuts</Link></li>
-              <li><Link to="/shop?category=loafers" className="hover:text-amber-400 transition-colors">Penny & Tassel Loafers</Link></li>
-              <li><Link to="/shop?category=monk-straps" className="hover:text-amber-400 transition-colors">Double Monk Straps</Link></li>
-              <li><Link to="/shop?category=boots" className="hover:text-amber-400 transition-colors">Chelsea & Dress Boots</Link></li>
-              <li><Link to="/shop?category=sneakers" className="hover:text-amber-400 transition-colors">Nappa Leather Sneakers</Link></li>
-              <li><Link to="/shop?category=casual-slippers" className="hover:text-amber-400 transition-colors">Velvet Evening Slippers</Link></li>
+              <li><Link to="/shop?category=oxfords" className="hover:text-amber-400 transition-colors">New Arrivals</Link></li>
+              <li><Link to="/shop?category=oxfords" className="hover:text-amber-400 transition-colors">Best Sellers</Link></li>
+              <li><Link to="/shop?category=loafers" className="hover:text-amber-400 transition-colors">Loafers</Link></li>
+              <li><Link to="/shop?category=oxfords" className="hover:text-amber-400 transition-colors">Oxfords</Link></li>
+              <li><Link to="/shop?category=boots" className="hover:text-amber-400 transition-colors">Boots</Link></li>
+              <li><Link to="/shop?category=sneakers" className="hover:text-amber-400 transition-colors">Sneakers</Link></li>
             </ul>
           </div>
 
-          {/* Artisan Heritage */}
+          {/* HELP Column */}
           <div>
-            <h4 className="text-xs font-mono uppercase tracking-widest text-stone-200 font-bold mb-4">The Atelier</h4>
+            <h4 className="text-xs font-mono uppercase tracking-widest text-stone-200 font-bold mb-4">HELP</h4>
             <ul className="space-y-2.5 text-xs font-light">
-              <li><Link to="/about" className="hover:text-amber-400 transition-colors">Goodyear Welted Process</Link></li>
-              <li><Link to="/about" className="hover:text-amber-400 transition-colors">French & Italian Leather Sourcing</Link></li>
-              <li><Link to="/about" className="hover:text-amber-400 transition-colors">Hand-Patina Finishing Studio</Link></li>
-              <li><Link to="/collections" className="hover:text-amber-400 transition-colors">Lookbook & Collections</Link></li>
-              <li><Link to="/about" className="hover:text-amber-400 transition-colors">Sustainability & Ethics</Link></li>
+              <li><a href={`mailto:${BRAND_CONFIG.supportEmail}`} className="hover:text-amber-400 transition-colors">Contact Us</a></li>
+              <li><Link to="/about" className="hover:text-amber-400 transition-colors">Shipping Information</Link></li>
+              <li><Link to="/about" className="hover:text-amber-400 transition-colors">Returns & Exchanges</Link></li>
+              <li><Link to="/shop" className="hover:text-amber-400 transition-colors">Size Guide</Link></li>
+              <li><Link to="/about" className="hover:text-amber-400 transition-colors">FAQ</Link></li>
             </ul>
           </div>
 
-          {/* Customer Care */}
+          {/* COMPANY & SOCIAL Column */}
           <div>
-            <h4 className="text-xs font-mono uppercase tracking-widest text-stone-200 font-bold mb-4">Client Services</h4>
-            <ul className="space-y-2.5 text-xs font-light">
-              <li><span className="hover:text-amber-400 cursor-pointer">Bespoke Size Fitting Guide</span></li>
-              <li><span className="hover:text-amber-400 cursor-pointer">Goodyear Resoling Service</span></li>
-              <li><span className="hover:text-amber-400 cursor-pointer">Shipping & Global Concierge</span></li>
-              <li><span className="hover:text-amber-400 cursor-pointer">30-Day Returns & Exchanges</span></li>
-              <li><span className="hover:text-amber-400 cursor-pointer">Shoe Care & Cream Guide</span></li>
+            <h4 className="text-xs font-mono uppercase tracking-widest text-stone-200 font-bold mb-4">COMPANY</h4>
+            <ul className="space-y-2.5 text-xs font-light mb-6">
+              <li><Link to="/about" className="hover:text-amber-400 transition-colors">About Us</Link></li>
+              <li><Link to="/about" className="hover:text-amber-400 transition-colors">Our Story</Link></li>
+              <li><Link to="/about" className="hover:text-amber-400 transition-colors">Careers</Link></li>
             </ul>
+
+            <h4 className="text-xs font-mono uppercase tracking-widest text-stone-200 font-bold mb-3">SOCIAL</h4>
+            <div className="flex space-x-3 text-xs font-mono text-stone-400">
+              <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:text-amber-400 transition-colors">Instagram</a>
+              <span>•</span>
+              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="hover:text-amber-400 transition-colors">LinkedIn</a>
+              <span>•</span>
+              <a href="https://facebook.com" target="_blank" rel="noreferrer" className="hover:text-amber-400 transition-colors">Facebook</a>
+            </div>
           </div>
         </div>
 
         {/* Bottom Rights */}
-        <div className="pt-8 border-t border-stone-800/80 flex flex-col md:flex-row items-center justify-between text-[11px] font-mono text-stone-500">
-          <p>© {new Date().getFullYear()} AURELIUS & CO. Luxury Footwear. All rights reserved.</p>
+        <div className="pt-8 flex flex-col md:flex-row items-center justify-between text-[11px] font-mono text-stone-500">
+          <p>© 2026 {BRAND_CONFIG.brandName}. All rights reserved.</p>
           <div className="flex items-center space-x-4 mt-4 md:mt-0">
             <span>Privacy Policy</span>
             <span>•</span>
             <span>Terms of Service</span>
             <span>•</span>
-            <span className="text-amber-400 font-semibold flex items-center space-x-1">
-              <span>Production-Ready API Scalable Architecture</span>
-            </span>
+            <span className="text-amber-400 font-semibold">Production Ready Architecture</span>
           </div>
         </div>
 
